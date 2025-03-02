@@ -1,5 +1,5 @@
 #include "item.hpp"
-#include "sprite.hpp"
+#include "texture.hpp"
 #include "util.hpp"
 #include "raylib/raylib.h"
 #include <iostream>
@@ -9,6 +9,7 @@ std::unordered_map<std::string, std::unique_ptr<Item>> Item::m_itemDict;
 Item::Item(const std::string& displayName, const std::string& spriteFilename)
 {
 	m_displayName = displayName;
+
 }
 Item::~Item()
 {

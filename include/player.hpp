@@ -1,5 +1,6 @@
 #pragma once
 #include "entity.hpp"
+#include "texture.hpp"
 
 
 class Player : public Entity
@@ -12,6 +13,8 @@ private:
 		float damping;
 		Vector2* velocity;
 	} m_movementVars;
+
+	Texture* m_texCharacter;
 
 public:
 	Player(int health, float posX, float posY);

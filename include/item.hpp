@@ -1,5 +1,5 @@
 #pragma once
-#include "sprite.hpp"
+#include "texture.hpp"
 #include <unordered_map>
 #include <string>
 #include <memory>
@@ -9,7 +9,7 @@ class Item
 {
 private:
 	std::string m_displayName;
-	Sprite* m_sprite;
+	Texture* m_texture;
 
 	static std::unordered_map<std::string, std::unique_ptr<Item>> m_itemDict;
 

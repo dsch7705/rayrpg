@@ -139,7 +139,7 @@
     <ClCompile Include="src\item.cpp" />
     <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\player.cpp" />
-    <ClCompile Include="src\sprite.cpp" />
+    <ClCompile Include="src\texture.cpp" />
     <ClCompile Include="src\util.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -150,7 +150,7 @@
     <ClInclude Include="include\raylib\raylib.h" />
     <ClInclude Include="include\raylib\raymath.h" />
     <ClInclude Include="include\raylib\rlgl.h" />
-    <ClInclude Include="include\sprite.hpp" />
+    <ClInclude Include="include\texture.hpp" />
     <ClInclude Include="include\util.hpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

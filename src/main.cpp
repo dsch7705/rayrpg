@@ -1,29 +1,26 @@
-#include <iostream>
-#include "raylib/raylib.h"
-#include "raylib/raymath.h"
 #include "util.hpp"
 #include "entity_manager.hpp"
 #include "player.hpp"
 #include "item.hpp"
-#include "sprite.hpp"
+#include "texture.hpp"
+#include "raylib/raylib.h"
+#include "raylib/raymath.h"
+#include <iostream>
 
 
 bool drawBBs = false;
 
 int main()
 {
-	SetTraceLogLevel(LOG_ERROR);
+	SetTraceLogLevel(LOG_WARNING);
 	SetDebugLevel(DebugLevel::All);
 	InitWindow(800, 600, "RPG");
 
-	SpriteManager::LoadSprites();
+	TextureManager::LoadTextures();
 
 	Player p(10, GetScreenWidth() / 2.f, GetScreenHeight() / 2.f);
 	Item::RegisterItem("stick", new Item("Stick", "stick.png"));
 
-
-	Texture2D tex = LoadTexture("res/sprites/guy.png");
-	DebugPrint(DebugLevel::All, "MAIN: GL ID: %d\n", tex.id);
 	while (!WindowShouldClose())
 	{
 		EntityManager::Update(GetFrameTime());
@@ -31,7 +28,7 @@ int main()
 		BeginDrawing();
 		ClearBackground(SKYBLUE);
 		//DrawTexturePro(stick, Rectangle{ 0, 0, 16, 16 }, p.GetBoundingBox(), Vector2Zeros, 0.f, WHITE);
-		SpriteManager::DrawSpritesTest();
+		TextureManager::DrawTexturesTest();
 		EntityManager::Draw();
 
 		if (drawBBs)
@@ -43,11 +40,10 @@ int main()
 			}
 		}
 
-		//DrawTexturePro(tex, Rectangle{ 0, 0, (float)tex.width, (float)tex.height }, p.GetBoundingBox(), Vector2Zeros, 0.f, WHITE);
 		EndDrawing();
 	}
 
-	SpriteManager::UnloadSprites();
+	TextureManager::UnloadTextures();
 	CloseWindow();
 	DebugPrint(DebugLevel::All, "Bye bye!");
 }

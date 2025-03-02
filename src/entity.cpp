@@ -12,7 +12,6 @@ Entity::Entity(int health, float posX, float posY)
 	m_boundingBoxSize = new DEFAULT_BB_SIZE_VEC2;
 	m_boundingBox = new Rectangle{ m_position->x - m_boundingBoxSize->x / 2.f, m_position->y - m_boundingBoxSize->y / 2.f,
 									m_boundingBoxSize->x, m_boundingBoxSize->y};
-	m_sprite = nullptr;
 
 	EntityManager::RegisterEntity(this);
 }
@@ -64,20 +63,13 @@ void Entity::SetBoundingBoxSize(float width, float height)
 
 	UpdateBB();
 }
-void Entity::UpdateBB(bool updateSize)
+void Entity::UpdateBB()
 {
-	if (updateSize)
-	{
-		m_boundingBox->width = m_boundingBoxSize->x;
-		m_boundingBox->height = m_boundingBoxSize->y;
-	}
+	m_boundingBox->width = m_boundingBoxSize->x;
+	m_boundingBox->height = m_boundingBoxSize->y;
 
 	m_boundingBox->x = m_position->x - m_boundingBoxSize->x / 2.f;
 	m_boundingBox->y = m_position->y - m_boundingBoxSize->y / 2.f;
-}
-void Entity::SetSprite(const std::string& filename)
-{
-	m_sprite = SpriteManager::GetSprite(filename);
 }
 
 Vector2 Entity::GetPosition()
@@ -87,10 +79,6 @@ Vector2 Entity::GetPosition()
 Rectangle Entity::GetBoundingBox()
 {
 	return *m_boundingBox;
-}
-Sprite* Entity::GetSprite()
-{
-	return m_sprite;
 }
 int Entity::GetHealth()
 {

@@ -33,7 +33,7 @@
     <ClCompile Include="src\item.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\sprite.cpp">
+    <ClCompile Include="src\texture.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -62,7 +62,7 @@
     <ClInclude Include="include\item.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="include\sprite.hpp">
+    <ClInclude Include="include\texture.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

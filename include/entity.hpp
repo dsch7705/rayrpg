@@ -1,5 +1,5 @@
 #pragma once
-#include "sprite.hpp"
+#include "texture.hpp"
 #include <string>
 
 
@@ -14,9 +14,8 @@ private:
 	Vector2* m_position;
 	Vector2* m_boundingBoxSize;
 	Rectangle* m_boundingBox;
-	Sprite* m_sprite;
 
-	void UpdateBB(bool updateSize=false);
+	void UpdateBB();
 
 public:
 	Entity(int health, float posX, float posY);
@@ -50,11 +49,9 @@ public:
 	void UpdatePosition(const Vector2& value);
 	void SetPosition(const Vector2& value);
 	void SetBoundingBoxSize(float width, float height);
-	void SetSprite(const std::string& filename);
 
 	Vector2 GetPosition(void);
 	Rectangle GetBoundingBox(void);
-	Sprite* GetSprite(void);
 
 	int GetHealth(void);
 };
