@@ -1,14 +1,15 @@
+#pragma once
+#include "sprite.hpp"
 #include <unordered_map>
 #include <string>
 #include <memory>
 
 
-struct Texture2D;
 class Item
 {
 private:
-	Texture2D* m_sprite;
 	std::string m_displayName;
+	Sprite* m_sprite;
 
 	static std::unordered_map<std::string, std::unique_ptr<Item>> m_itemDict;
 

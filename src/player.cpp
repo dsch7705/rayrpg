@@ -1,5 +1,6 @@
 #include "player.hpp"
 #include "sprite.hpp"
+#include "util.hpp"
 #include "raylib/raylib.h"
 #include "raylib/raymath.h"
 #include <iostream>
@@ -12,12 +13,17 @@ Player::Player(int health, float posX, float posY) : Entity(health, posX, posY)
 	m_movementVars.maxVel = 400.f;
 	m_movementVars.velocity = new Vector2{ 0 };
 
-	SetSprite(&SpriteManager::LoadSprite("guy.png"));
+	SetSprite("guy.png");
 }
 void Player::Update(float deltaTime)
 {
 	Move(deltaTime);
 }
+void Player::Draw()
+{
+	GetSprite()->Draw(GetBoundingBox());
+}
+
 void Player::Move(float deltaTime)
 {
 	// Accelerate

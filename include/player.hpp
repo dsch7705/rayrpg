@@ -1,3 +1,4 @@
+#pragma once
 #include "entity.hpp"
 
 
@@ -15,5 +16,7 @@ private:
 public:
 	Player(int health, float posX, float posY);
 	void Update(float deltaTime) override;
+	void Draw(void) override;
+
 	void Move(float deltaTime);
 };

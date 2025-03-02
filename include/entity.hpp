@@ -1,8 +1,10 @@
 #pragma once
+#include "sprite.hpp"
+#include <string>
+
 
 struct Vector2;
 struct Rectangle;
-struct Texture2D;
 class Entity
 {
 private:
@@ -12,7 +14,7 @@ private:
 	Vector2* m_position;
 	Vector2* m_boundingBoxSize;
 	Rectangle* m_boundingBox;
-	Texture2D* m_sprite;
+	Sprite* m_sprite;
 
 	void UpdateBB(bool updateSize=false);
 
@@ -39,6 +41,7 @@ public:
 	/// </summary>
 	/// <param name="deltaTime"></param>
 	virtual void Update(float deltaTime) = 0;
+	virtual void Draw(void) = 0;
 
 	/// <summary>
 	/// Adds value to position
@@ -47,9 +50,11 @@ public:
 	void UpdatePosition(const Vector2& value);
 	void SetPosition(const Vector2& value);
 	void SetBoundingBoxSize(float width, float height);
-	void SetSprite(Texture2D* sprite);
+	void SetSprite(const std::string& filename);
 
 	Vector2 GetPosition(void);
 	Rectangle GetBoundingBox(void);
+	Sprite* GetSprite(void);
+
 	int GetHealth(void);
 };

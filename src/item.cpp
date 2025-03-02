@@ -8,12 +8,10 @@
 std::unordered_map<std::string, std::unique_ptr<Item>> Item::m_itemDict;
 Item::Item(const std::string& displayName, const std::string& spriteFilename)
 {
-	m_sprite = &SpriteManager::LoadSprite(spriteFilename);
 	m_displayName = displayName;
 }
 Item::~Item()
 {
-	std::cout << "Bye bye!\n";
 }
 void Item::RegisterItem(const std::string& id, Item* item)
 {

@@ -1,6 +1,5 @@
 #include "entity.hpp"
 #include "entity_manager.hpp"
-#include "sprite.hpp"
 #include "raylib/raylib.h"
 
 #define DEFAULT_BB_SIZE_VEC2 Vector2{ 30.f, 45.f }
@@ -13,8 +12,7 @@ Entity::Entity(int health, float posX, float posY)
 	m_boundingBoxSize = new DEFAULT_BB_SIZE_VEC2;
 	m_boundingBox = new Rectangle{ m_position->x - m_boundingBoxSize->x / 2.f, m_position->y - m_boundingBoxSize->y / 2.f,
 									m_boundingBoxSize->x, m_boundingBoxSize->y};
-
-	m_sprite = NULL;
+	m_sprite = nullptr;
 
 	EntityManager::RegisterEntity(this);
 }
@@ -77,20 +75,24 @@ void Entity::UpdateBB(bool updateSize)
 	m_boundingBox->x = m_position->x - m_boundingBoxSize->x / 2.f;
 	m_boundingBox->y = m_position->y - m_boundingBoxSize->y / 2.f;
 }
-void Entity::SetSprite(Texture2D* sprite)
+void Entity::SetSprite(const std::string& filename)
 {
-	m_sprite = sprite;
+	m_sprite = SpriteManager::GetSprite(filename);
 }
 
-Vector2 Entity::GetPosition(void)
+Vector2 Entity::GetPosition()
 {
 	return *m_position;
 }
-Rectangle Entity::GetBoundingBox(void)
+Rectangle Entity::GetBoundingBox()
 {
 	return *m_boundingBox;
 }
-int Entity::GetHealth(void)
+Sprite* Entity::GetSprite()
+{
+	return m_sprite;
+}
+int Entity::GetHealth()
 {
 	return m_health;
 }

@@ -12,6 +12,13 @@ void EntityManager::Update(float deltaTime)
 		e->Update(deltaTime);
 	}
 }
+void EntityManager::Draw()
+{
+	for (Entity*& e : m_entities)
+	{
+		e->Draw();
+	}
+}
 
 std::vector<Entity*> EntityManager::m_entities;
 void EntityManager::RegisterEntity(Entity* entity)

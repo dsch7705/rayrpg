@@ -1,3 +1,4 @@
+#pragma once
 #include <vector>
 
 
@@ -9,6 +10,8 @@ private:
 
 public:
 	static void Update(float deltaTime);
+	static void Draw(void);
+
 	static void RegisterEntity(Entity* entity);
 	static void RemoveEntity(int indexOf);
 	static void RemoveEntity(Entity* entity);
