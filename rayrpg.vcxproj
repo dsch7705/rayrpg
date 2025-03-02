@@ -134,6 +134,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="src\animator.cpp" />
     <ClCompile Include="src\entity.cpp" />
     <ClCompile Include="src\entity_manager.cpp" />
     <ClCompile Include="src\item.cpp" />
@@ -144,6 +145,7 @@
     <ClCompile Include="src\util.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="include\animator.hpp" />
     <ClInclude Include="include\entity.hpp" />
     <ClInclude Include="include\entity_manager.hpp" />
     <ClInclude Include="include\item.hpp" />

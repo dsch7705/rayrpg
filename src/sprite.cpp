@@ -32,15 +32,17 @@ Sprite::Sprite(const std::string& textureFilename, int frameWidth, int frameHeig
 
 void Sprite::FrameStepForward()
 {
-	if (m_spritesheetIdx + 1 > m_frameCount - 1)
+	m_spritesheetIdx++;
+	if (m_spritesheetIdx > m_frameCount - 1)
 	{
 		if (m_loop)
+		{
 			m_spritesheetIdx = 0;
-		return;
-	}
+			return;
+		}
 
-	m_spritesheetIdx++;
-	DebugPrint(DebugLevel::All, "spritesheet index: %d\n", m_spritesheetIdx);
+		m_spritesheetIdx--;
+	}
 }
 void Sprite::FrameStepBackward()
 {
@@ -51,7 +53,6 @@ void Sprite::FrameStepBackward()
 		return;
 	}
 	m_spritesheetIdx--;
-	DebugPrint(DebugLevel::All, "spritesheet index: %d\n", m_spritesheetIdx);
 }
 void Sprite::FrameSetIndex(unsigned int idx)
 {

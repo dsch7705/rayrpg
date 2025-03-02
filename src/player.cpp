@@ -6,6 +6,7 @@
 
 
 int movementXDirection = 0;
+int movementYDirection = 0;
 
 Player::Player(int health, float posX, float posY) : Entity(health, posX, posY)
 {
@@ -15,29 +16,50 @@ Player::Player(int health, float posX, float posY) : Entity(health, posX, posY)
 	m_movementVars.velocity = new Vector2{ 0 };
 
 	m_sprCharacterIdle = Sprite("guy_idle.png");
-	m_sprCharacterWalk = Sprite("guy_walk.png", 32, 48, 4, true);
-	SetBoundingBoxSize(60.f, 90.f);
+	m_sprCharacterWalkSide = Sprite("guy_walk_side.png", 32, 48, 4, true);
+	m_sprCharacterWalkFacing = Sprite("guy_walk_facing.png", 32, 48, 2, true);
+	m_sprCharacterWalkAway = Sprite("guy_walk_away.png", 32, 48, 2, true);
+	m_animator = Animator();
+	m_animator.AddState("idle", &m_sprCharacterIdle);
+	m_animator.AddState("walk_side", &m_sprCharacterWalkSide);
+	m_animator.AddState("walk_facing", &m_sprCharacterWalkFacing);
+	m_animator.AddState("walk_away", &m_sprCharacterWalkAway);
+	m_animator.SetCurrentState("idle");
+
+	SetBoundingBoxSize(100.f, 150.f);
 }
 void Player::Update(float deltaTime)
 {
 	Move(deltaTime);
+	m_animator.Update(deltaTime);
 }
 void Player::Draw()
 {
-	switch (movementXDirection)
+	switch (movementYDirection)
 	{
 	case 1:
-		m_sprCharacterWalk.Draw(GetBoundingBox());
+		m_animator.SetCurrentState("walk_facing");
 		break;
+
 	case -1:
-		m_sprCharacterWalk.Draw(GetBoundingBox(), true, false);
+		m_animator.SetCurrentState("walk_away");
 		break;
-	case 0:
-		m_sprCharacterIdle.Draw(GetBoundingBox());
-		break;
+
 	default:
+		switch (movementXDirection)
+		{
+		case 1:
+		case -1:
+			m_animator.SetCurrentState("walk_side");
+			break;
+		default:
+			m_animator.SetCurrentState("idle");
+		}
+
 		break;
 	}
+
+	m_animator.GetCurrentState()->Draw(GetBoundingBox(), (movementXDirection == -1), false);
 }
 
 void Player::Move(float deltaTime)
@@ -51,6 +73,12 @@ void Player::Move(float deltaTime)
 		movementXDirection = -1;
 	else
 		movementXDirection = 0;
+	if (inputVec.y > 0.f)
+		movementYDirection = 1;
+	else if (inputVec.y < 0.f)
+		movementYDirection = -1;
+	else
+		movementYDirection = 0;
 
 	Vector2& vel = *m_movementVars.velocity;
 	vel = Vector2Add(vel, Vector2Scale(inputVec, m_movementVars.accel * deltaTime));
