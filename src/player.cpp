@@ -5,7 +5,7 @@
 #include <iostream>
 
 
-int movementXDirection = 1;
+int movementXDirection = 0;
 
 Player::Player(int health, float posX, float posY) : Entity(health, posX, posY)
 {
@@ -14,8 +14,9 @@ Player::Player(int health, float posX, float posY) : Entity(health, posX, posY)
 	m_movementVars.maxVel = 400.f;
 	m_movementVars.velocity = new Vector2{ 0 };
 
-	m_texCharacter = TextureManager::GetTexture("guy.png");
-	SetBoundingBoxSize(100.f, 150.f);
+	m_sprCharacterIdle = Sprite("guy_idle.png");
+	m_sprCharacterWalk = Sprite("guy_walk.png", 32, 48, 4, true);
+	SetBoundingBoxSize(60.f, 90.f);
 }
 void Player::Update(float deltaTime)
 {
@@ -23,15 +24,20 @@ void Player::Update(float deltaTime)
 }
 void Player::Draw()
 {
-	Texture2D tex = *m_texCharacter;
-	Rectangle texCharacterSrc{0, 0, tex.width, tex.height};
-	if (movementXDirection > 0.f)
+	switch (movementXDirection)
 	{
-		texCharacterSrc.x -= texCharacterSrc.width;
-		texCharacterSrc.width *= -1.f;
+	case 1:
+		m_sprCharacterWalk.Draw(GetBoundingBox());
+		break;
+	case -1:
+		m_sprCharacterWalk.Draw(GetBoundingBox(), true, false);
+		break;
+	case 0:
+		m_sprCharacterIdle.Draw(GetBoundingBox());
+		break;
+	default:
+		break;
 	}
-
-	DrawTexturePro(*m_texCharacter, texCharacterSrc, GetBoundingBox(), Vector2Zeros, 0.f, WHITE);
 }
 
 void Player::Move(float deltaTime)
@@ -43,6 +49,8 @@ void Player::Move(float deltaTime)
 		movementXDirection = 1;
 	else if (inputVec.x < 0.f)
 		movementXDirection = -1;
+	else
+		movementXDirection = 0;
 
 	Vector2& vel = *m_movementVars.velocity;
 	vel = Vector2Add(vel, Vector2Scale(inputVec, m_movementVars.accel * deltaTime));

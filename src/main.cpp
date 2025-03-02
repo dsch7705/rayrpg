@@ -28,7 +28,7 @@ int main()
 		BeginDrawing();
 		ClearBackground(SKYBLUE);
 		//DrawTexturePro(stick, Rectangle{ 0, 0, 16, 16 }, p.GetBoundingBox(), Vector2Zeros, 0.f, WHITE);
-		TextureManager::DrawTexturesTest();
+		//TextureManager::DrawTexturesTest();
 		EntityManager::Draw();
 
 		if (drawBBs)
