@@ -10,65 +10,45 @@ Sprite::Sprite(const std::string& textureFilename)
 	m_texture = TextureManager::GetTexture(textureFilename);
 	assert(m_texture != nullptr);
 
-	width = m_texture->width;
-	height = m_texture->height;
-	m_spritesheetIdx = 0;
+	sheetWidth = m_texture->width;
+	sheetHeight = m_texture->height;
+	width = sheetWidth;
+	height = sheetWidth;
+	
+	m_frameIdx = 0;
 	m_framesInRow = 1;
 	m_frameCount = 1;
-	m_loop = false;
 }
-Sprite::Sprite(const std::string& textureFilename, int frameWidth, int frameHeight, int frameCount, bool loop)
+Sprite::Sprite(const std::string& textureFilename, int rows, int cols)
 {
 	m_texture = TextureManager::GetTexture(textureFilename);
 	assert(m_texture != nullptr);
 
-	width = frameWidth;
-	height = frameHeight;
-	m_spritesheetIdx = 0;
-	m_framesInRow = m_texture->width / frameWidth;
-	m_frameCount = frameCount;
-	m_loop = loop;
+	sheetWidth = m_texture->width;
+	sheetHeight = m_texture->height;
+	width = sheetWidth / cols;
+	height = sheetHeight / rows;
+	
+	m_frameIdx = 0;
+	m_framesInRow = cols;
+	m_frameCount = rows * cols;
 }
 
-void Sprite::FrameStepForward()
-{
-	m_spritesheetIdx++;
-	if (m_spritesheetIdx > m_frameCount - 1)
-	{
-		if (m_loop)
-		{
-			m_spritesheetIdx = 0;
-			return;
-		}
-
-		m_spritesheetIdx--;
-	}
-}
-void Sprite::FrameStepBackward()
-{
-	if (m_spritesheetIdx - 1 < 0)
-	{
-		if (m_loop)
-			m_spritesheetIdx = m_frameCount - 1;
-		return;
-	}
-	m_spritesheetIdx--;
-}
-void Sprite::FrameSetIndex(unsigned int idx)
+void Sprite::SetFrameIndex(unsigned int idx)
 {
 	if (idx > m_frameCount - 1)
 	{
-		m_spritesheetIdx = m_frameCount - 1;
+		m_frameIdx = m_frameCount - 1;
 		return;
 	}
 
-	m_spritesheetIdx = idx;
+	m_frameIdx = idx;
 }
 void Sprite::Draw(Rectangle dst, bool flipX, bool flipY)
 {
 	Rectangle src{ 0, 0, width, height };
-	src.x = width * (m_spritesheetIdx % m_framesInRow);
-	src.y = height * (m_spritesheetIdx / m_framesInRow);
+	src.x = width * (m_frameIdx % m_framesInRow);
+	src.y = height * (m_frameIdx / m_framesInRow);
 
 	if (flipX)
 	{

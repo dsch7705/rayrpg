@@ -6,14 +6,15 @@
 
 
 std::unordered_map<std::string, std::unique_ptr<Item>> Item::m_itemDict;
-Item::Item(const std::string& displayName, const std::string& spriteFilename)
+Item::Item(const std::string& displayName, const std::string& spriteFilename) : displayName(displayName)
 {
-	m_displayName = displayName;
-
+	sprite = Sprite(spriteFilename);
+	maxStackSize = DEFAULT_MAX_ITEM_STACK_SIZE;
 }
 Item::~Item()
 {
 }
+
 void Item::RegisterItem(const std::string& id, Item* item)
 {
 	m_itemDict[id] = std::unique_ptr<Item>(item);
@@ -22,11 +23,7 @@ void Item::RemoveItem(const std::string& id)
 {
 	m_itemDict.erase(id);
 }
-
-void Item::DumpDict(void)
+Item Item::GetItem(const std::string& id)
 {
-	for (const auto& pair : m_itemDict)
-	{
-		DebugPrint(DebugLevel::All, "'%s': '%s'\n", pair.first.c_str(), pair.second->m_displayName.c_str());
-	}
+	return *m_itemDict.at(id).get();
 }

@@ -7,12 +7,13 @@ class Sprite
 {
 private:
 	Texture* m_texture;
-	unsigned int m_spritesheetIdx;
+	unsigned int m_frameIdx;
 	unsigned int m_framesInRow;
 	int m_frameCount;
-	bool m_loop;
 
 public:
+	int sheetWidth;
+	int sheetHeight;
 	int width;
 	int height;
 
@@ -29,11 +30,10 @@ public:
 	/// <param name="frameWidth"></param>
 	/// <param name="frameHeight"></param>
 	/// <param name="frameCount"></param>
-	Sprite(const std::string& textureFilename, int frameWidth, int frameHeight, int frameCount, bool loop);
+	Sprite(const std::string& textureFilename, int rows, int cols);
 
-	void FrameStepForward(void);
-	void FrameStepBackward(void);
-	void FrameSetIndex(unsigned int idx);
+	void SetFrameIndex(unsigned int idx);
 	void Draw(Rectangle dst, bool flipX=false, bool flipY=false);
 
+	friend class Animator;
 };

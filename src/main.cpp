@@ -8,7 +8,7 @@
 #include <iostream>
 
 
-bool drawBBs = false;
+const bool drawBBs = true;
 
 int main()
 {
@@ -18,25 +18,22 @@ int main()
 
 	TextureManager::LoadTextures();
 
-	Player p(10, GetScreenWidth() / 2.f, GetScreenHeight() / 2.f);
 	Item::RegisterItem("stick", new Item("Stick", "stick.png"));
 
+	Player p(10, GetScreenWidth() / 2.f, GetScreenHeight() / 2.f);
 	while (!WindowShouldClose())
 	{
 		EntityManager::Update(GetFrameTime());
 
 		BeginDrawing();
 		ClearBackground(SKYBLUE);
-		//DrawTexturePro(stick, Rectangle{ 0, 0, 16, 16 }, p.GetBoundingBox(), Vector2Zeros, 0.f, WHITE);
-		//TextureManager::DrawTexturesTest();
-		EntityManager::Draw();
 
+		EntityManager::Draw();
 		if (drawBBs)
 		{
 			for (Entity*& e : EntityManager::GetAllEntities())
 			{
-				Color c = CheckCollisionPointRec(GetMousePosition(), e->GetBoundingBox()) ? GREEN : WHITE;
-				DrawRectangleRec(e->GetBoundingBox(), c);
+				DrawRectangleLinesEx(e->GetBoundingBox(), 2.f, LIME);
 			}
 		}
 
