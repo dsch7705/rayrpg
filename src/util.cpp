@@ -1,7 +1,9 @@
 #include "util.hpp"
 #include <cstdarg>
 #include <cstdio>
+#include <string>
 #include <iostream>
+#include <stdexcept>
 
 
 static DebugLevel debugLevel = DebugLevel::Warning;
@@ -17,7 +19,7 @@ void DebugPrint(DebugLevel level, const char* fmt, ...)
 	// Header
 	switch (level)
 	{
-	case DebugLevel::All:
+	case DebugLevel::Info:
 		std::cout << "[MESSAGE]: ";
 		break;
 	case DebugLevel::Warning:
@@ -35,4 +37,19 @@ void DebugPrint(DebugLevel level, const char* fmt, ...)
 	va_start(args, fmt);
 	vprintf(fmt, args);
 	va_end(args);
+
+	std::cout << '\n';
+}
+void ThrowException(const char* fmt, ...)
+{
+	char msg[512];
+	va_list args;
+	va_start(args, fmt);
+	vsprintf(msg, fmt, args);
+	va_end(args);
+
+	std::string err = "[RUNTIME EXCEPTION]: ";
+	err.append(msg);
+	std::cout << err << '\n';
+	throw std::runtime_error(msg);
 }

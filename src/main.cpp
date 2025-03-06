@@ -2,7 +2,7 @@
 #include "entity_manager.hpp"
 #include "player.hpp"
 #include "item.hpp"
-#include "texture.hpp"
+#include "texture_manager.hpp"
 #include "raylib/raylib.h"
 #include "raylib/raymath.h"
 #include <iostream>
@@ -13,7 +13,7 @@ const bool drawBBs = true;
 int main()
 {
 	SetTraceLogLevel(LOG_WARNING);
-	SetDebugLevel(DebugLevel::All);
+	SetDebugLevel(DebugLevel::Info);
 	InitWindow(800, 600, "RPG");
 
 	TextureManager::LoadTextures();
@@ -42,5 +42,5 @@ int main()
 
 	TextureManager::UnloadTextures();
 	CloseWindow();
-	DebugPrint(DebugLevel::All, "Bye bye!");
+	DebugPrint(DebugLevel::Info, "Bye bye!");
 }

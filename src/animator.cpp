@@ -1,17 +1,18 @@
 #include "animator.hpp"
 #include "util.hpp"
-#include <cassert>
 
 
 AnimationState::AnimationState(const std::string& name, Sprite* sprite, unsigned int frameCount, unsigned int rowOffset, bool loop, bool reverse, unsigned int frameRate)
 	: name(name), sprite(sprite), loop(loop), reverse(reverse), done(false), frameRate(frameRate), currentFrame(0), frameCount(frameCount)
 {
 	m_frameStartIdx = rowOffset * (sprite->sheetWidth / sprite->width);
+	m_lastFrameIdx = m_frameStartIdx;
 	m_timeOnCurrentFrame = 0.f;
 }
 void AnimationState::Update(float deltaTime)
 {
 	m_timeOnCurrentFrame += deltaTime;
+	m_lastFrameIdx = currentFrame;
 	if (m_timeOnCurrentFrame > 1.f / frameRate)
 	{
 		reverse ? StepBackward() : StepForward();
@@ -49,6 +50,17 @@ void AnimationState::Reset()
 	m_timeOnCurrentFrame = 0.f;
 }
 
+bool AnimationState::IsFrameOnce(unsigned int frameIdx)
+{
+	if (m_lastFrameIdx == currentFrame)
+		return false;
+
+	if (currentFrame == frameIdx)
+		return true;
+
+	return false;
+}
+
 
 Transition::Transition(const std::string& to, bool* conditionPtr, bool invert)
 	: to(to), m_conditionPtr(conditionPtr), invert(invert)
@@ -67,7 +79,6 @@ void Animator::Update(float deltaTime)
 	{
 		if (*tr.m_conditionPtr == !tr.invert)
 		{
-			DebugPrint(All, "%s\n", tr.to.c_str());
 			// Transition to new state
 			SetCurrentState(tr.to);
 			break;
@@ -81,26 +92,41 @@ void Animator::Update(float deltaTime)
 AnimationState* Animator::AddState(AnimationState state)
 {
 	m_states.emplace(std::make_pair(state.name, state));
-	return &m_states.at(state.name);
+	AnimationState* statePtr = &m_states.at(state.name);
+
+	if (m_defaultState == nullptr)
+		m_defaultState = statePtr;
+
+	return statePtr;
 }
 void Animator::RemoveState(const std::string& stateName)
 {
 	m_states.erase(stateName);
 }
-void Animator::SetCurrentState(const std::string& stateName)
+void Animator::SetDefaultState(const std::string& stateName)
 {
-	AnimationState* state = &m_states.at(stateName);
-	if (state == nullptr)
+	if (m_states.count(stateName) < 1)
 	{
-		DebugPrint(DebugLevel::Error, "'%s' is not a valid state.\n", stateName);
-		assert(state != nullptr);
+		DebugPrint(DebugLevel::Warning, "Animator::SetDefaultState(): '%s' is not a valid state.", stateName.c_str());
+		return;
 	}
 
-	if (state == m_currentState)
+	AnimationState* statePtr = &m_states.at(stateName);
+	m_defaultState = statePtr;
+}
+void Animator::SetCurrentState(const std::string& stateName)
+{
+	if (m_states.count(stateName) < 1)
+	{
+		DebugPrint(DebugLevel::Warning, "Animator::SetCurrentState(): '%s' is not a valid state.", stateName.c_str());
 		return;
-	//DebugPrint(DebugLevel::All, "%x | %x : %s\n", state, m_currentState, state->name.c_str());
+	}
 
-	m_currentState = state;
+	AnimationState* statePtr = &m_states.at(stateName);
+	if (statePtr == m_currentState)
+		return;
+
+	m_currentState = statePtr;
 	m_currentState->Reset();
 }
 AnimationState* Animator::GetCurrentState()

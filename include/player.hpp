@@ -1,36 +1,18 @@
 #pragma once
-#include "entity.hpp"
-#include "inventory.hpp"
-#include "sprite.hpp"
-#include "animator.hpp"
+#include "character.hpp"
 
 
-class Player : public Entity
+class Player : public Character
 {
 private:
 	struct
 	{
-		float accel;
-		float maxWalkSpeed;
-		float maxRunSpeed;
-		float damping;
-		Vector2* velocity;
-
-		bool running;
-	} m_movementVars;
-	struct
-	{
-		Sprite sprSoldier;
-		Animator animator;
-
-		int facingXDir;
-		float walkSpeed;
-
-		bool walking;
 		bool attack;
-	} m_animVars;
+		bool attackHeavy;
+	} m_spriteVars;
 
-	Inventory m_inventory;
+	void Move(float deltaTime);
+	void Attack(void);
 
 public:
 	Player(int health, float posX, float posY);
@@ -38,7 +20,6 @@ public:
 
 	void Update(float deltaTime) override;
 	void Draw(void) override;
-	void Animate(Vector2 inputVec);
+	void Animate(void) override;
 
-	void Move(float deltaTime);
 };

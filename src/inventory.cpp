@@ -31,7 +31,7 @@ void Inventory::AddItem(const std::string& id, int count)
 
 	if (m_slots.size() >= m_maxSlots)
 	{
-		DebugPrint(DebugLevel::All, "Inventory full (max %d slots)\n", m_maxSlots);
+		DebugPrint(DebugLevel::Info, "Inventory full (max %d slots)\n", m_maxSlots);
 		return;
 	}
 	m_slots.push_back(std::make_pair(id, 0));
@@ -42,7 +42,7 @@ void Inventory::Print()
 	for (const auto& pair : m_slots)
 	{
 		Item itm = Item::GetItem(pair.first);
-		DebugPrint(DebugLevel::All, "[Item]: '%s' (%d)\n", itm.displayName.c_str(), pair.second);
+		DebugPrint(DebugLevel::Info, "[Item]: '%s' (%d)\n", itm.displayName.c_str(), pair.second);
 	}
 }
 void Inventory::Draw()

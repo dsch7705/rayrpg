@@ -1,13 +1,12 @@
 #pragma once
-#include <unordered_map>
 #include <string>
-#include <memory>
 
 
 struct Texture;
 namespace TextureManager
 {
 	inline const char* TEX_PATH = "res/textures/";
+	extern Texture* errTexture;
 
 	void LoadTextures(void);
 	void LoadTextures(const std::string& path);

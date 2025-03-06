@@ -1,5 +1,5 @@
 #include "item.hpp"
-#include "texture.hpp"
+#include "texture_manager.hpp"
 #include "util.hpp"
 #include "raylib/raylib.h"
 #include <iostream>

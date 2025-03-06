@@ -1,12 +1,15 @@
-#include "texture.hpp"
+#include "texture_manager.hpp"
 #include "util.hpp"
 #include "raylib/raylib.h"
 #include "raylib/raymath.h"
+#include <unordered_map>
 #include <filesystem>
 #include <iostream>
+#include <stdexcept>
 
 
 std::unordered_map<std::string, Texture> texDict;
+Texture* TextureManager::errTexture = nullptr;
 void TextureManager::LoadTextures()
 {
 	LoadTextures(TEX_PATH);
@@ -25,7 +28,13 @@ void TextureManager::LoadTextures(const std::string& path)
 		std::string filename = entry.path().filename().string();
 		Texture tex = LoadTexture(filepath.c_str());
 		texDict.insert(std::make_pair(filename, tex));
+
+		if (filename == "error.png")
+			errTexture = &texDict.at(filename);
 	}
+
+	if (errTexture == nullptr)
+		ThrowException("'%s' not found!", "error.png");
 }
 void TextureManager::UnloadTextures()
 {
@@ -40,7 +49,7 @@ void TextureManager::UnloadTextures()
 Texture* TextureManager::GetTexture(const std::string& filename)
 {
 	if (texDict.count(filename) == 0)
-		return nullptr;
+		return &texDict.at("error.png");
 
 	return &texDict.at(filename);
 }
@@ -48,7 +57,7 @@ void TextureManager::PrintTextures(void)
 {
 	for (const auto& pair : texDict)
 	{
-		DebugPrint(DebugLevel::All, "%s\n", pair.first.c_str());
+		DebugPrint(DebugLevel::Info, "%s\n", pair.first.c_str());
 	}
 }
 void TextureManager::DrawTexturesTest()

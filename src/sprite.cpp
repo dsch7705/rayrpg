@@ -2,13 +2,11 @@
 #include "util.hpp"
 #include "raylib/raylib.h"
 #include "raylib/raymath.h"
-#include <cassert>
 
 
 Sprite::Sprite(const std::string& textureFilename)
 {
 	m_texture = TextureManager::GetTexture(textureFilename);
-	assert(m_texture != nullptr);
 
 	sheetWidth = m_texture->width;
 	sheetHeight = m_texture->height;
@@ -22,7 +20,6 @@ Sprite::Sprite(const std::string& textureFilename)
 Sprite::Sprite(const std::string& textureFilename, int rows, int cols)
 {
 	m_texture = TextureManager::GetTexture(textureFilename);
-	assert(m_texture != nullptr);
 
 	sheetWidth = m_texture->width;
 	sheetHeight = m_texture->height;
